@@ -2,7 +2,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const Pusher = require("pusher");
 const app = express();
-
+var fs = require("fs");
+var FormData = require("form-data");
+var axios = require("axios");
+var FileAPI = require("file-api"),
+  File = FileAPI.File,
+  FileReader = FileAPI.FileReader;
 // Body parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -21,6 +26,37 @@ app.get("/", (req, res) => {
   return res.sendFile(__dirname + "/index.html");
 });
 
+function getBase64(file, res) {
+  var reader = new FileReader();
+  reader.readAsDataURL(new File(file));
+  reader.onload = function() {
+    fs.writeFile("video.txt", reader.result, function(err) {
+      if (err) throw err;
+      console.log("Saved!");
+      var form = new FormData();
+      form.append("encoded_video", "encoded_file.txt");
+
+      // Post file
+      axios
+        .post("http://192.168.13.42:5000/translate/", form)
+        .then(response => {
+          console.log("Done");
+          res.send(response);
+        })
+        .catch(error => res.send(error));
+    });
+  };
+  reader.onerror = function(error) {
+    console.log("Error: ", error);
+  };
+}
+
+app.get("/file", (req, res) => {
+  var form = new FormData();
+  form.append("encoded_video", fs.createReadStream("step.mov"));
+  //console.log(fs.createReadStream("step.mov"));
+  getBase64("step.mov", res);
+});
 app.post("/pusher/auth", (req, res) => {
   const socketId = req.body.socket_id;
   const channel = req.body.channel_name;
