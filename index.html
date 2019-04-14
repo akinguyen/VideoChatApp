@@ -152,13 +152,17 @@
     a.nav-link{
         font-size: 20px;
     }
+
+    #main{
+
+    }
  
   </style>
   <head>
     <title>ExcuseMe</title>
   </head>
 
-  <body>
+  <body id="main" class="bg-light-mode">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">Navbar</a>
       <button
@@ -197,8 +201,9 @@
         </label>
       </div>
     </nav>
-    
+
     <div id="app">
+            
       <h2 id="myid"></h2>
       <div class="container text-align">
         <div class="row">
@@ -266,36 +271,49 @@
             $("body").removeClass("bg-dark-mode").addClass("bg-light-mode");
         }*/
         
-        function press(e){
-            if (mode){
-                $("body").removeClass("bg-light-mode").addClass("bg-dark-mode");
-                console.log(mode)
-                mode = 0;
-            }
-            else{
-                $("body").removeClass("bg-dark-mode").addClass("bg-light-mode");
 
-                console.log(mode)
-                mode = 1;
-            }
-            $(".switch").off().click(press);
-        }
+            $(".switch").on("click", function(e){
+                if (mode == 0){
+                    mode++;
+                    $("#main").removeClass("bg-dark-mode").addClass("bg-light-mode");
+                    $("#myid").css("color", "white");
+                    $("h5").css("color", "white");
+
+                    return true;
+                }
+                else if (mode == 1){
+                    $("#main").removeClass("bg-light-mode").addClass("bg-dark-mode");
+                    $("#myid").css("color", "#FF4000");
+                    $("h5").css("color", "#FF4000");
 
 
-            $(".switch").one("click", function(e){
-                if (mode){
-                $("body").removeClass("bg-light-mode").addClass("bg-dark-mode");
-                console.log(mode)
-                mode = 0;
+                    mode++;      
+                    return true;         
+                }
+                else if (mode == 2) {
+                    $("#main").removeClass("bg-light-mode").addClass("bg-dark-mode");
+                    $("#myid").css("color", "#FF4000");
+                    $("h5").css("color", "#FF4000");
+
+
+                    mode++; 
+                    return true;       
+
                 }
                 else{
-                    $("body").removeClass("bg-dark-mode").addClass("bg-light-mode");
+                    $("#main").removeClass("bg-dark-mode").addClass("bg-light-mode");
+                    $("#myid").css("color", "white");
+                    $("h5").css("color", "white");
 
-                    console.log(mode)
-                    mode = 1;
+                    mode = 0;      
+
+                    return true;    
+                    
+
                 }
             });
-        /*
+        
+
         getVideo();
         function getVideo(){
             $.get("file", function(res, status){
@@ -305,7 +323,7 @@
                 }
                 
             });
-        }*/
+        }
     })
   
   var pusher = new Pusher("451fab013a7e18ea0008", {
