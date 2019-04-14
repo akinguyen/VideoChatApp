@@ -2,7 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const Pusher = require("pusher");
 const app = express();
-var Faker = require("Faker");
+var fs = require("fs");
+var FormData = require("form-data");
 var axios = require("axios");
 var FileAPI = require("file-api"),
   File = FileAPI.File,
@@ -20,23 +21,28 @@ const pusher = new Pusher({
   cluster: "us3",
   encrypted: true
 });
-
 app.get("/", (req, res) => {
   return res.sendFile(__dirname + "/index.html");
 });
 
+//const CircularJSON = require("circular-json");
+
 function getBase64(file, res) {
   var reader = new FileReader();
-
   reader.readAsDataURL(new File(file));
 
   reader.onload = function() {
+    fs.writeFileSync("video.txt", reader.result);
+
     axios
       .post("http://192.168.13.42:5000/translate_accent/", {
         data: reader.result
       })
       .then(function(response) {
-        console.log(response);
+        //fs.writeFileSync("video.txt", response.data.encoded_video);
+        console.log(response.data["encoded_video"]);
+
+        res.send({ data: response.data["encoded_video"] });
       })
       .catch(function(error) {
         console.log(error);
@@ -46,15 +52,17 @@ function getBase64(file, res) {
     console.log("Error: ", error);
   };
 }
-
 app.get("/file", (req, res) => {
-  getBase64("sample_final.mov", res);
+  getBase64("recording.mp4", res);
 });
 
-app.get("/name", (req, res) => {
-  res.send({ name: Faker.Name.findName() });
+app.get("/video", (req, res) => {
+  fs.readFile("video.txt", (err, data) => {
+    if (err) throw err;
+    res.send({ data: data.toString("base64") });
+    fs.writeFileSync("video1.txt", data.toString("base64"));
+  });
 });
-
 app.post("/pusher/auth", (req, res) => {
   const socketId = req.body.socket_id;
   const channel = req.body.channel_name;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+
   <!-- Latest compiled and minified CSS -->
   <link
     rel="stylesheet"
@@ -14,7 +14,7 @@
 
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
+  <html>
   <style>
     /* Extra small devices (phones, 600px and down) */
     @media only screen and (max-width: 600px) {
@@ -38,7 +38,82 @@
     /* Extra large devices (large laptops and desktops, 1200px and up) */
     @media only screen and (min-width: 1200px) {
     }
+    @import url('https://fonts.googleapis.com/css?family=Oswald');
 
+        .bg-light-mode{
+            background: #f85032;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #e73827, #f85032);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #e73827, #f85032); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        }
+        .bg-dark-mode{
+            background: #232526;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        }
+        .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+        }
+
+        .switch input { 
+        opacity: 0;
+        width: 0;
+        height: 0;
+        }
+
+        .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+        }
+
+        .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+        }
+
+        input:checked + .slider {
+        background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+        border-radius: 34px;
+        }
+
+        .slider.round:before {
+        border-radius: 50%;
+        }
+    html, h5{
+        color: #FF4000
+    }
     #app {
       text-align: center;
     }
@@ -49,16 +124,13 @@
       color: white;
       font-size: 20px;
     }
-    #selfview {
+    #selfview , #remoteview{
       width: 100%;
       height: 100%;
       border: 2px solid;
+      background: #000000
     }
-    #remoteview {
-      width: 100%;
-      height: 100%;
-      border: 2px solid;
-    }
+
     .callButton {
       height: 100px;
       width: 100px;
@@ -67,15 +139,20 @@
       display: inline-block;
     }
     #endCall {
-      height: 80px;
-      width: 80px;
-      border-radius: 25;
+      height: 100px;
+      width: 100px;
+      border-radius: 40;
       font-size: 35px;
     }
     #myid {
+      color: #FF4000;
       margin-top: 30px;
       margin-bottom: 30px;
     }
+    a.nav-link{
+        font-size: 20px;
+    }
+ 
   </style>
   <head>
     <title>ExcuseMe</title>
@@ -98,47 +175,49 @@
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item active">
+          <li class="nav-item ml-4 active">
             <a class="nav-link" href="#"
-              >Home <span class="sr-only">(current)</span></a
+              >Dashboard <span class="sr-only">(current)</span></a
             >
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+          <li class="nav-item ml-4">
+            <a class="nav-link" href="#">Chat</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
+          <li class="nav-item ml-4">
+            <a class="nav-link" href="#">Stream</a>
+            </li>
+          <li class="nav-item ml-4">
+             <a class="nav-link" href="#">Entertainment</a>
           </li>
+   
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input
-            class="form-control mr-sm-2"
-            type="search"
-            placeholder="Search"
-          />
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-            Search
-          </button>
-        </form>
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+        </label>
       </div>
     </nav>
-
+    
     <div id="app">
-      <h3 id="myid"></h3>
-      <div class="container">
+      <h2 id="myid"></h2>
+      <div class="container text-align">
         <div class="row">
           <div class="col-sm-6"><video id="selfview" autoplay></video></div>
           <div class="col-sm-6"><video id="remoteview" autoplay></video></div>
         </div>
-        <div class="d-flex justify-content-center">...</div>
+        <div class="d-flex justify-content-center mt-5">
           <div id="users" style="display: inline"></div>
-          <button
-            id="endCall"
-            style="display: none;"
-            onclick="endCurrentCall()"
-          >
-            📴
-          </button>
+          <div style="display: none" id="offButton">
+            <h5 id="offButton" >Off</h5>
+            <button
+                id="endCall"
+                onclick="endCurrentCall()"
+            >
+                📴
+            </button>
+          </div>
+          
+        </div>
         </div>
       </div>
     </div>
@@ -175,6 +254,60 @@
     "Cristine",
     "Ilana"
   ];
+  
+    $(function(){
+        
+        let mode = true;
+        /*
+        if (mode){
+            $("body").removeClass("bg-light-mode").addClass("bg-dark-mode");
+        }
+        else{
+            $("body").removeClass("bg-dark-mode").addClass("bg-light-mode");
+        }*/
+        
+        function press(e){
+            if (mode){
+                $("body").removeClass("bg-light-mode").addClass("bg-dark-mode");
+                console.log(mode)
+                mode = 0;
+            }
+            else{
+                $("body").removeClass("bg-dark-mode").addClass("bg-light-mode");
+
+                console.log(mode)
+                mode = 1;
+            }
+            $(".switch").off().click(press);
+        }
+
+
+            $(".switch").one("click", function(e){
+                if (mode){
+                $("body").removeClass("bg-light-mode").addClass("bg-dark-mode");
+                console.log(mode)
+                mode = 0;
+                }
+                else{
+                    $("body").removeClass("bg-dark-mode").addClass("bg-light-mode");
+
+                    console.log(mode)
+                    mode = 1;
+                }
+            });
+        /*
+        getVideo();
+        function getVideo(){
+            $.get("file", function(res, status){
+                if (res){
+                    console.log(Object.keys(res.data));
+                    $("#videoSource").attr("src", `data:video/mp4;base64,${res.data}` );
+                }
+                
+            });
+        }*/
+    })
+  
   var pusher = new Pusher("451fab013a7e18ea0008", {
     cluster: "us3",
     encrypted: true,
@@ -342,10 +475,12 @@
     }
   }
   function toggleEndCallButton() {
-    if (document.getElementById("endCall").style.display == "inline-block") {
-      document.getElementById("endCall").style.display = "none";
+    if (document.getElementById("offButton").style.display == "inline-block") {
+      document.getElementById("offButton").style.display = "none";
+
     } else {
-      document.getElementById("endCall").style.display = "inline-block";
+      document.getElementById("offButton").style.display = "inline-block";
+
     }
   }
   //Listening for the candidate message from a peer sent from onicecandidate handler
