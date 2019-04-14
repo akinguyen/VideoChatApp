@@ -21,9 +21,56 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"
   ></script>
-
+  <style>
+    #app {
+      text-align: center;
+    }
+    .footer {
+      margin-top: 30px;
+      padding: 20px;
+      text-align: center;
+      color: white;
+      font-size: 20px;
+    }
+    #selfview {
+      width: 100%;
+      height: 100%;
+      border: 2px solid;
+    }
+    #remoteview {
+      position: absolute;
+      border: 2px solid gray;
+      margin: 0;
+      padding: 4px;
+      bottom: 0;
+      right: 0;
+      background: #000000;
+    }
+    .p {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      padding: 0;
+    }
+    .callButton {
+      height: 80px;
+      width: 80px;
+      border-radius: 25;
+      font-size: 35px;
+    }
+    #endCall {
+      height: 80px;
+      width: 80px;
+      border-radius: 25;
+      font-size: 35px;
+    }
+    #myid {
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+  </style>
   <head>
-    <title>WebRTC Audio/Video-Chat</title>
+    <title>ExcuseMe</title>
   </head>
 
   <body>
@@ -69,17 +116,28 @@
     </nav>
 
     <div id="app">
-      <div id="myid"></div>
-      <video id="selfview" autoplay></video>
-      <video id="remoteview" autoplay></video>
-      <button id="endCall" style="display: none;" onclick="endCurrentCall()">
-        End Call
-      </button>
-      <div id="list">
-        <ul id="users"></ul>
+      <h3 id="myid"></h3>
+      <div class="container">
+        <div class="p">
+          <video id="selfview" autoplay></video>
+          <video id="remoteview" autoplay></video>
+        </div>
+        <div style=" width: 50%; margin-top: 30px;">
+          <div id="users" style="display: inline"></div>
+          <button
+            id="endCall"
+            style="display: none;"
+            onclick="endCurrentCall()"
+          >
+            📴
+          </button>
+        </div>
       </div>
     </div>
   </body>
+  <div class="footer bg-dark">
+    <p>@Copyright 2019</p>
+  </div>
 </html>
 <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
 <script>
@@ -128,11 +186,11 @@
     var list = "";
     users.forEach(function(user) {
       list +=
-        `<li>` +
+        `<h5>` +
         user +
-        ` <input type="button" style="float:right;"  value="Call" onclick="callUser('` +
-        user +
-        `')" id="makeCall" /></li>`;
+        `</h5>` +
+        ` <input type="button" class="callButton" value="📞" onclick="callUser('` +
+        `')" id="makeCall" />`;
     });
     document.getElementById("users").innerHTML = list;
   }
@@ -243,10 +301,10 @@
     }
   }
   function toggleEndCallButton() {
-    if (document.getElementById("endCall").style.display == "block") {
+    if (document.getElementById("endCall").style.display == "inline-block") {
       document.getElementById("endCall").style.display = "none";
     } else {
-      document.getElementById("endCall").style.display = "block";
+      document.getElementById("endCall").style.display = "inline-block";
     }
   }
   //Listening for the candidate message from a peer sent from onicecandidate handler
