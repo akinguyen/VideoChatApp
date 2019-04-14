@@ -55,25 +55,15 @@
       border: 2px solid;
     }
     #remoteview {
-      position: absolute;
-      border: 2px solid gray;
-      margin: 0;
-      padding: 4px;
-      bottom: 0;
-      right: 0;
-      background: #000000;
-    }
-    .p {
-      position: relative;
-      height: 100%;
       width: 100%;
-      padding: 0;
+      height: 100%;
+      border: 2px solid;
     }
     .callButton {
-      height: 80px;
-      width: 80px;
+      height: 100px;
+      width: 100px;
       border-radius: 25;
-      font-size: 35px;
+      font-size: 40px;
       display: inline-block;
     }
     #endCall {
@@ -136,11 +126,11 @@
     <div id="app">
       <h3 id="myid"></h3>
       <div class="container">
-        <div class="p">
-          <video id="selfview" autoplay></video>
-          <video id="remoteview" autoplay></video>
+        <div class="row">
+          <div class="col-sm-6"><video id="selfview" autoplay></video></div>
+          <div class="col-sm-6"><video id="remoteview" autoplay></video></div>
         </div>
-        <div style=" width: 50%; margin-top: 30px;">
+        <div class="d-flex justify-content-center">...</div>
           <div id="users" style="display: inline"></div>
           <button
             id="endCall"
@@ -231,6 +221,7 @@
   function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
+
   function render() {
     let list = "";
     users.forEach(function(user) {
