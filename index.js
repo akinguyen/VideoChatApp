@@ -24,6 +24,13 @@ const pusher = new Pusher({
 app.get("/", (req, res) => {
   return res.sendFile(__dirname + "/index.html");
 });
+app.get("/call", (req, res) => {
+  return res.sendFile(__dirname + "/index.html");
+});
+
+app.get("/dashboard", (req, res) => {
+  return res.sendFile(__dirname + "/dashboard.html");
+});
 
 //const CircularJSON = require("circular-json");
 
