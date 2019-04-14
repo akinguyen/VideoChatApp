@@ -60,7 +60,7 @@ function getBase64(file, res) {
   };
 }
 app.get("/file", (req, res) => {
-  getBase64("recording.mp4", res);
+  getBase64("good.webm", res);
 });
 
 app.get("/video", (req, res) => {

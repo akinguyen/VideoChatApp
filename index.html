@@ -248,17 +248,31 @@ body {
 .navItem:nth-of-type(6) a:hover {
   background:#CFCF13;
 }
+.button {
+  cursor: pointer;
+  display: block;
+  width: 160px;
+  border: 1px solid black;
+  font-size: 16px;
+  text-align: center;
+  height: 30px;
+  color: white;
+  background-color: darkgreen;
+  text-decoration: none;
+}
  
   </style>
   <head>
     <title>ExcuseMe</title>
   </head>
 
+
+
+
   <body id="main" class="bg-light-mode">
         <ul class="nav">
                 <li class="navItem"><a href="/dashboard"><img width= "40" src="https://cdn1.imggmi.com/uploads/2019/4/14/334c321bf59c64800b874874577d789c-full.png" alt=""></a></li>
                 <li class="navItem"><a href="#">Dashboard</a></li>
-                <li class="navItem"><a href="#">Chat</a></li>
                 <li class="navItem"><a href="call">Stream</a></li>
                 <li class="navItem"><a href="http://awsapp-20190413004538-hostingbucket-dev.s3-website-us-east-1.amazonaws.com/">Connection</a></li>
                 <li class="navItem text-align">
@@ -275,8 +289,19 @@ body {
       <h2 id="myid"></h2>
       <div class="container text-align">
         <div class="row">
+           <video id="preview" width="160" height="120" autoplay muted></video>
+           <video id="recording" width="160" height="120" controls></video>
+           <video id="j" width="160" height="120" controls></video>
+
+           <a id="downloadButton" class="button">
+                Download
+              </a>
+            <pre id="log"></pre>
+
+
+            
           <div class="col-sm-6"><video id="selfview" autoplay></video></div>
-          <div class="col-sm-6"><video id="remoteview" autoplay></video></div>
+          <div class="col-sm-6"> <video id="remoteview" autoplay></video></div>
         </div>
         <div class="d-flex justify-content-center mt-5">
           <div id="users" style="display: inline"></div>
@@ -301,7 +326,71 @@ body {
     </div>
 </html>
 
+
+<!-- Use HLS.js to support the HLS format in browsers. -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@0.8.2"></script>
+<script>
+ (function(){
+   // Replace with your asset's playback ID
+   var playbackId = "JY02tIWDtLHi8oahqmfTLCNURRhyNex3m";
+   var url = "https://stream.mux.com/"+playbackId+".m3u8";
+
+   // HLS.js-specific setup code
+   if (Hls.isSupported()) {
+     var video = document.getElementById("j");
+     var hls = new Hls();
+     hls.loadSource(url);
+     hls.attachMedia(video);
+   }
+ })();
+</script>
 <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
+<script>
+        let preview = document.getElementById("preview");
+        let recording = document.getElementById("recording");
+        //let startButton = document.getElementById("startButton");
+        //let stopButton = document.getElementById("stopButton");
+        let downloadButton = document.getElementById("downloadButton");
+        let logElement = document.getElementById("log");
+        
+        let recordingTimeMS = 20000;
+        function log(msg) {
+          logElement.innerHTML += msg + "\n";
+        }
+        function wait(delayInMS) {
+          return new Promise(resolve => setTimeout(resolve, delayInMS));
+        }
+        function startRecording(stream, lengthInMS) {
+          let recorder = new MediaRecorder(stream);
+          let data = [];
+         
+          recorder.ondataavailable = event => data.push(event.data);
+          recorder.start();
+          log(recorder.state + " for " + (lengthInMS/1000) + " seconds...");
+         
+          let stopped = new Promise((resolve, reject) => {
+            recorder.onstop = resolve;
+            recorder.onerror = event => reject(event.name);
+          });
+        
+          let recorded = wait(lengthInMS).then(
+            () => recorder.state == "recording" && recorder.stop()
+          );
+         
+          return Promise.all([
+            stopped,
+            recorded
+          ])
+          .then(() => data);
+        }
+        
+        function stop(stream) {
+          stream.getTracks().forEach(track => track.stop());
+        }
+        
+         
+        </script>
+        
 <script>
   var username = [
     "Felix",
@@ -382,18 +471,7 @@ body {
 
                 }
             });
-        
-
-        getVideo();
-        function getVideo(){
-            $.get("file", function(res, status){
-                if (res){
-                    console.log(Object.keys(res.data));
-                    $("#videoSource").attr("src", `data:video/mp4;base64,${res.data}` );
-                }
-                
-            });
-        }
+    
     })
   
   var pusher = new Pusher("451fab013a7e18ea0008", {
@@ -417,7 +495,7 @@ body {
     usersOnline = members.count;
     id = channel.members.me.id;
     document.getElementById("myid").innerHTML =
-      ` Welcome ` + username[getRandomInt(username.length - 1)];
+      `🍅 Welcome ` + username[getRandomInt(username.length - 1)] + " 🍅";
     members.each(member => {
       if (member.id != channel.members.me.id) {
         users.push(member.id);
@@ -478,6 +556,31 @@ body {
       } else {
         document.getElementById("remoteview").src = evt.stream;
       }
+
+      // Start Recording from this point
+      navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true
+        }).then(stream => {
+            preview.srcObject = stream;
+            downloadButton.href = stream;
+            preview.captureStream = preview.captureStream || preview.mozCaptureStream;
+            return new Promise(resolve => preview.onplaying = resolve);
+        }).then(() => startRecording(preview.captureStream(), recordingTimeMS))
+        .then (recordedChunks => {
+            let recordedBlob = new Blob(recordedChunks, { type: "video/webm" });
+            recording.src = URL.createObjectURL(recordedBlob);
+            downloadButton.href = recording.src;
+            downloadButton.download = "RecordedVideo.webm";
+            
+            log("Successfully recorded " + recordedBlob.size + " bytes of " +
+                recordedBlob.type + " media.");
+        })
+        .catch(log);
+
+
+
+
     };
   }
   function getCam() {
@@ -546,6 +649,7 @@ body {
     }
     prepareCaller();
     toggleEndCallButton();
+    stop(preview.srcObject)
   }
   function endCurrentCall() {
     channel.trigger("client-endcall", {
