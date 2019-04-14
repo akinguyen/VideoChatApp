@@ -1,26 +1,20 @@
 <!DOCTYPE html>
 <html>
+  <!-- Latest compiled and minified CSS -->
   <link
     rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-    crossorigin="anonymous"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
   />
-  <script
-    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"
-  ></script>
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
   <style>
     /* Extra small devices (phones, 600px and down) */
     @media only screen and (max-width: 600px) {
@@ -80,6 +74,7 @@
       width: 80px;
       border-radius: 25;
       font-size: 35px;
+      display: inline-block;
     }
     #endCall {
       height: 80px;
@@ -140,7 +135,7 @@
 
     <div id="app">
       <h3 id="myid"></h3>
-      <div class="container wrapper">
+      <div class="container">
         <div class="p">
           <video id="selfview" autoplay></video>
           <video id="remoteview" autoplay></video>
@@ -164,6 +159,32 @@
 </html>
 <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
 <script>
+  var username = [
+    "Felix",
+    "Epifania",
+    "Domenica",
+    "Mario",
+    "Ivan",
+    "Isaura",
+    "Dwain",
+    "Loren",
+    "Etha",
+    "Reginia",
+    "Melonie",
+    "Garrett",
+    "Marta",
+    "Blanch",
+    "Zulema",
+    "Jayson",
+    "Aurora",
+    "Shaunna",
+    "Ellan",
+    "Terrance",
+    "Heriberto",
+    "Selma",
+    "Cristine",
+    "Ilana"
+  ];
   var pusher = new Pusher("451fab013a7e18ea0008", {
     cluster: "us3",
     encrypted: true,
@@ -184,7 +205,8 @@
     //set the member count
     usersOnline = members.count;
     id = channel.members.me.id;
-    document.getElementById("myid").innerHTML = ` My caller id is : ` + id;
+    document.getElementById("myid").innerHTML =
+      ` Welcome ` + username[getRandomInt(username.length - 1)];
     members.each(member => {
       if (member.id != channel.members.me.id) {
         users.push(member.id);
@@ -205,15 +227,20 @@
     }
     render();
   });
+
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
   function render() {
-    var list = "";
+    let list = "";
     users.forEach(function(user) {
       list +=
-        `<h5>` +
-        user +
+        `<div style="display: inline-block"><h5>` +
+        username[getRandomInt(username.length - 1)] +
         `</h5>` +
         ` <input type="button" class="callButton" value="📞" onclick="callUser('` +
-        `')" id="makeCall" />`;
+        user +
+        `')" id="makeCall" /></div>`;
     });
     document.getElementById("users").innerHTML = list;
   }

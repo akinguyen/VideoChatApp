@@ -2,8 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const Pusher = require("pusher");
 const app = express();
-var fs = require("fs");
-var FormData = require("form-data");
+var Faker = require("Faker");
 var axios = require("axios");
 var FileAPI = require("file-api"),
   File = FileAPI.File,
@@ -50,6 +49,10 @@ function getBase64(file, res) {
 
 app.get("/file", (req, res) => {
   getBase64("sample_final.mov", res);
+});
+
+app.get("/name", (req, res) => {
+  res.send({ name: Faker.Name.findName() });
 });
 
 app.post("/pusher/auth", (req, res) => {
