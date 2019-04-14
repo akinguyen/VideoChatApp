@@ -28,10 +28,12 @@ app.get("/", (req, res) => {
 
 function getBase64(file, res) {
   var reader = new FileReader();
+
   reader.readAsDataURL(new File(file));
+
   reader.onload = function() {
     axios
-      .post("http://192.168.13.42:5000/translate/", {
+      .post("http://192.168.13.42:5000/translate_accent/", {
         data: reader.result
       })
       .then(function(response) {
@@ -47,7 +49,7 @@ function getBase64(file, res) {
 }
 
 app.get("/file", (req, res) => {
-  getBase64("step.mov", res);
+  getBase64("sample_final.mov", res);
 });
 
 app.post("/pusher/auth", (req, res) => {
