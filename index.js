@@ -47,9 +47,9 @@ function getBase64(file, res) {
       })
       .then(function(response) {
         //fs.writeFileSync("video.txt", response.data.encoded_video);
-        console.log(response.data["encoded_video"]);
+        console.log(response);
 
-        res.send({ data: response.data["encoded_video"] });
+        res.send(response.data);
       })
       .catch(function(error) {
         console.log(error);
