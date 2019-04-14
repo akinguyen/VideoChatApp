@@ -1,0 +1,159 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Lora"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      body {
+        background: black;
+        text-align: center;
+      }
+      h1 {
+        color: white;
+      }
+      .title {
+        margin-top: 30%;
+        position: absolute;
+        width: 100%;
+        z-index: 3;
+      }
+      .overlap {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 2;
+        background: black;
+        opacity: 0.5;
+      }
+      .welcome {
+        font-size: 40px;
+        color: white;
+        font-display: "Lora";
+      }
+      .slogan {
+        font-size: 20px;
+        color: white;
+        font-display: "Lora";
+      }
+      button {
+        font-size: 15px;
+      }
+    </style>
+    <script>
+      let novas = [];
+      function setup() {
+        createCanvas(windowWidth, windowHeight);
+        x = 0;
+        noFill();
+        stroke("green");
+        background(0);
+        angleMode(DEGREES);
+        ellipseMode(CENTER);
+        for (let i = 0; i < 80; i++) {
+          novas.push(
+            new Nova(
+              createVector(
+                random(windowWidth - 400, windowWidth + 800),
+                random(400, -600)
+              )
+            )
+          );
+        }
+      }
+      function windowResized() {
+        resizeCanvas(windowWidth, windowHeight);
+        background(0);
+      }
+      function draw() {
+        background(0, 25);
+        fill("lightblue");
+        tint(255, 127); // Display at half opacity
+        for (let i = 0; i < novas.length; i++) {
+          novas[i].update();
+          novas[i].show();
+          if (novas[i].pos.x < 0) {
+            novas.splice(i, 1);
+            novas.push(
+              new Nova(
+                createVector(
+                  random(windowWidth - 400, windowWidth + 800),
+                  random(400, -600)
+                )
+              )
+            );
+          }
+        }
+      }
+
+      class Nova {
+        constructor(pos, vel = createVector(-1.5, 1), velMag = random(3, 7)) {
+          this.pos = pos;
+          vel.normalize();
+          this.vel = vel.mult(velMag);
+        }
+        update() {
+          this.pos = this.pos.add(this.vel);
+        }
+        show() {
+          push();
+          stroke("green");
+          //strokeWeight(1);
+          translate(this.pos.x, this.pos.y);
+          rotate(atan(this.vel.y / this.vel.x));
+          ellipse(0, 0, 15, 10);
+          pop();
+        }
+      }
+    </script>
+    <script>
+      $(function() {
+        $("#start").click(function() {
+          window.location.href = "index.html";
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4">
+        <div class="title">
+          <img
+            width="300"
+            src="https://cdn1.imggmi.com/uploads/2019/4/14/334c321bf59c64800b874874577d789c-full.png"
+            alt="To-may-to && To-mah-to"
+          />
+          <br />
+          <button id="start" class="btn btn-danger mt-5">
+            Getting Started
+          </button>
+        </div>
+      </div>
+      <div class="col-sm-4"></div>
+    </div>
+    <div class="overlap"></div>
+  </body>
+</html>
