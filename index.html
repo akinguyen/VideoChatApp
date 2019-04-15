@@ -167,121 +167,115 @@
         font-size: 20px;
     }
 
-    #main{
 
-    }
+  * {
+    margin:0px;
+    padding:0px;
+    font-family:'Open Sans', sans-serif;
+  }
+  body {
+      margin: 0 0 100px;
+    /* BACKGROUND FROM: subtlepatterns.com */
+    background:url(https://subtlepatterns.com/patterns/footer_lodyas.png);
+  }
+  .nav {
+    list-style-type:none;
+    display:flex;
+    flex-wrap: nowrap;
+    width:100%;
+    background:#222;
+  }
+  .navItem, .navItem a {
+    display:inline-block;
+    flex-grow: 1;
+  }
+  .navItem a {
+    width:100%;
+    padding-top:30px;
+    padding-bottom:30px;
+    color:white;
+    text-decoration:none;
+    text-align:center;
+    text-shadow: 1px 1px 2px rgba(34,34,34,0.4);
+    font-weight:600;
+    font-size:20px;
+  }
+  .navItem label  {
+    margin-top:30px;
+    margin-left:100px;
 
-* {
-  margin:0px;
-  padding:0px;
-  font-family:'Open Sans', sans-serif;
-}
-body {
-    margin: 0 0 100px;
-  /* BACKGROUND FROM: subtlepatterns.com */
-  background:url(https://subtlepatterns.com/patterns/footer_lodyas.png);
-}
-.nav {
-  list-style-type:none;
-  display:flex;
-  flex-wrap: nowrap;
-  width:100%;
-  background:#222;
-}
-.navItem, .navItem a {
-  display:inline-block;
-  flex-grow: 1;
-}
-.navItem a {
-  width:100%;
-  padding-top:30px;
-  padding-bottom:30px;
-  color:white;
-  text-decoration:none;
-  text-align:center;
-  text-shadow: 1px 1px 2px rgba(34,34,34,0.4);
-  font-weight:600;
-  font-size:20px;
-}
-.navItem label  {
-  margin-top:30px;
-  margin-left:100px;
-
-  color:white;
-  text-decoration:none;
-  text-align:center;
-  text-shadow: 1px 1px 2px rgba(34,34,34,0.4);
-}
-.navItem:nth-of-type(1) {
-  border-bottom:2px solid #D60F3A;
-}
-.navItem:nth-of-type(1) a:hover {
-  background:#D60F3A;
-}
-.navItem:nth-of-type(2) {
-  border-bottom:2px solid #8317AD;
-}
-.navItem:nth-of-type(2) a:hover {
-  background:#8317AD;
-}
-.navItem:nth-of-type(3) {
-  border-bottom:2px solid #3116DE;
-}
-.navItem:nth-of-type(3) a:hover {
-  background:#3116DE;
-}
-.navItem:nth-of-type(4) {
-  border-bottom:2px solid #0E8FC2;
-}
-.navItem:nth-of-type(4) label:hover {
-  background:#0E8FC2;
-}
-.navItem:nth-of-type(5) {
-  border-bottom:2px solid #0EC23E;
-}
-.navItem:nth-of-type(5) a:hover {
-  background:#0EC23E;
-}
-.navItem:nth-of-type(6) {
-  border-bottom:2px solid #CFCF13;
-}
-.navItem:nth-of-type(6) a:hover {
-  background:#CFCF13;
-}
-.button {
-  cursor: pointer;
-  display: block;
-  width: 160px;
-  border: 1px solid black;
-  font-size: 16px;
-  text-align: center;
-  height: 30px;
-  color: white;
-  padding-bottom: 30px;
-  text-decoration: none;
-}
- 
+    color:white;
+    text-decoration:none;
+    text-align:center;
+    text-shadow: 1px 1px 2px rgba(34,34,34,0.4);
+  }
+  .navItem:nth-of-type(1) {
+    border-bottom:2px solid #D60F3A;
+  }
+  .navItem:nth-of-type(1) a:hover {
+    background:#D60F3A;
+  }
+  .navItem:nth-of-type(2) {
+    border-bottom:2px solid #8317AD;
+  }
+  .navItem:nth-of-type(2) a:hover {
+    background:#8317AD;
+  }
+  .navItem:nth-of-type(3) {
+    border-bottom:2px solid #3116DE;
+  }
+  .navItem:nth-of-type(3) a:hover {
+    background:#3116DE;
+  }
+  .navItem:nth-of-type(4) {
+    border-bottom:2px solid #0E8FC2;
+  }
+  .navItem:nth-of-type(4) label:hover {
+    background:#0E8FC2;
+  }
+  .navItem:nth-of-type(5) {
+    border-bottom:2px solid #0EC23E;
+  }
+  .navItem:nth-of-type(5) a:hover {
+    background:#0EC23E;
+  }
+  .navItem:nth-of-type(6) {
+    border-bottom:2px solid #CFCF13;
+  }
+  .navItem:nth-of-type(6) a:hover {
+    background:#CFCF13;
+  }
+  .button {
+    cursor: pointer;
+    display: block;
+    width: 160px;
+    border: 1px solid black;
+    font-size: 16px;
+    text-align: center;
+    height: 30px;
+    color: white;
+    padding-bottom: 30px;
+    text-decoration: none;
+  }
+  
   </style>
   <head>
     <title>ExcuseMe</title>
   </head>
 
-
-
-
   <body id="main" class="bg-light-mode">
         <ul class="nav">
-                <li class="navItem"><a href="/dashboard"><img width= "40" src="https://images.emojiterra.com/google/android-pie/512px/1f345.png" alt=""></a></li>
-                <li class="navItem"><a href="call">Stream</a></li>
-                <li class="navItem"><a href="http://awsapp-20190413004538-hostingbucket-dev.s3-website-us-east-1.amazonaws.com/">Connection</a></li>
-                <li class="navItem">
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider round"></span>
-                    </label>
-                </li>
-              </ul>
-   
+            <li class="navItem"><a href="/dashboard"><img width= "40" src="https://images.emojiterra.com/google/android-pie/512px/1f345.png" alt=""></a></li>
+            <li class="navItem"><a href="call">Stream</a></li>
+            <li class="navItem"><a href="http://awsapp-20190413004538-hostingbucket-dev.s3-website-us-east-1.amazonaws.com/">Connection</a></li>
+            <li class="navItem">
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </li>
+          </ul>
+
         <script>
             $(function(){
                 $.get("/file", function(data, status){
